@@ -4,7 +4,7 @@ import Course from "../models/courseModel";
 
 
 
-export const listCourse = async(req:Request,res:Response):Promise<void>=>{
+export const listCourses = async(req:Request,res:Response):Promise<void>=>{
 
 
     const { category} = req.query;
@@ -28,12 +28,18 @@ export const getCourse = async (req:Request,res:Response):Promise<void>=>{
 
     try{
         const course = await Course.get(courseId);
+
+        if(!course){
+            res.status(404).json({message:"Course not found"})
+            return; 
+        }
+
         res.json({
             message:"Courses retrieved successfully", data:course
         })
     } catch(error){
         res.status(500).json({
-            message:"Error retrieving courses",error
+            message:"Error retrieving course",error
         })
         
     }
