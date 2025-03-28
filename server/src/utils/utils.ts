@@ -85,7 +85,7 @@ export const handleAdvancedVideoUpload = async (
     const videoType = manifestFileName.endsWith(".m3u8") ? "hls" : "dash";
 
     return {
-      videoUrl: `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${manifestFileName}`,
+      videoUrl: `${ process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${manifestFileName}`,
       videoType,
     };
   }
