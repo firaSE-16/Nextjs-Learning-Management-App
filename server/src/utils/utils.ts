@@ -85,7 +85,7 @@ export const handleAdvancedVideoUpload = async (
     const videoType = manifestFileName.endsWith(".m3u8") ? "hls" : "dash";
 
     return {
-      videoUrl: `${process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${manifestFileName}`,
+      videoUrl: `${ process.env.CLOUDFRONT_DOMAIN}/videos/${uniqueId}/${manifestFileName}`,
       videoType,
     };
   }
@@ -103,12 +103,14 @@ export const mergeSections = (
   }
 
   for (const newSection of newSections) {
+    
     const section = existingSectionsMap.get(newSection.sectionId);
     if (!section) {
       // Add new section
       existingSectionsMap.set(newSection.sectionId, newSection);
     } else {
       // Merge chapters within the existing section
+
       section.chapters = mergeChapters(section.chapters, newSection.chapters);
       existingSectionsMap.set(newSection.sectionId, section);
     }
@@ -121,6 +123,7 @@ export const mergeChapters = (
   existingChapters: any[],
   newChapters: any[]
 ): any[] => {
+
   const existingChaptersMap = new Map<string, any>();
   for (const existingChapter of existingChapters) {
     existingChaptersMap.set(existingChapter.chapterId, existingChapter);
