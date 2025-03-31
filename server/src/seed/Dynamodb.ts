@@ -1,8 +1,4 @@
-import {
-  DynamoDBClient,
-  DeleteTableCommand,
-  ListTablesCommand,
-} from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, DeleteTableCommand, ListTablesCommand } from "@aws-sdk/client-dynamodb";
 import fs from "fs";
 import path from "path";
 import dynamoose from "dynamoose";
@@ -12,23 +8,27 @@ import Course from "../models/courseModel";
 import UserCourseProgress from "../models/userCourseProgressModel";
 import dotenv from "dotenv";
 
+// Load environment variables from .env file
 dotenv.config();
+
 let client: DynamoDBClient;
 
 /* DynamoDB Configuration */
 const isProduction = process.env.NODE_ENV === "production";
 
 if (!isProduction) {
+  // Local DynamoDB setup for development
   dynamoose.aws.ddb.local();
   client = new DynamoDBClient({
-    endpoint: "http://localhost:8000",
-    region: "us-east-2",
+    endpoint: "http://localhost:8000", // Local DynamoDB endpoint
+    region: "us-east-2",  // Ensure this matches DynamoDB Local setup
     credentials: {
-      accessKeyId: "dummyKey123",
-      secretAccessKey: "dummyKey123",
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID || "AKIAIOSFODNN7EXAMPLE",  // Use env variables or default for local
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",  // Same here
     },
   });
 } else {
+  // Use AWS DynamoDB for production
   client = new DynamoDBClient({
     region: process.env.AWS_REGION || "us-east-2",
   });
